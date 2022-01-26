@@ -7,16 +7,17 @@ let move = 25;
 let scoreCount = 0;
 let marioY;
 let marioX;
-const randomScreenHeight = Math.floor(Math.random() * 900);
-const randomScreenWidth = Math.floor(Math.random() * 900);
 let coinY = 0;
 let coinX = 0;
 
 const coinMove = () => {
+  const randomScreenHeight =
+    Math.floor(Math.random() * window.innerHeight) + 100;
+  const randomScreenWidth = Math.floor(Math.random() * window.innerWidth) + 100;
   coin.style.left = `${randomScreenHeight}px`;
   coin.style.top = `${randomScreenWidth}px`;
-  coinY = Math.floor(randomScreenHeight / 10) * 25;
-  coinX = Math.floor(randomScreenWidth / 10) * 25;
+  coinY = +coin.style.top.replace("px", "");
+  coinX = +coin.style.left.replace("px", "");
 };
 window.addEventListener("load", () => {
   mario.style.left = "100px";
@@ -34,13 +35,13 @@ window.addEventListener("keydown", (e) => {
   switch (keyDown) {
     case "ArrowLeft":
       mario.style.left = marioLeft + "px";
-      marioX = marioLeft - 100;
+      marioX = marioLeft;
       console.log(marioX);
       check();
       break;
     case "ArrowRight":
       mario.style.left = marioRight + "px";
-      marioX = marioRight - 100;
+      marioX = marioRight;
       console.log(marioX);
       check();
 
@@ -61,10 +62,10 @@ window.addEventListener("keydown", (e) => {
 });
 
 function check() {
-  if (marioX === coinX && marioY === coinY) {
+  if (coinX - 10 < marioX && coinY - 10 < marioY) {
     coinMove();
-    console.log("Okay");
     scoreCount += 1;
+    score.innerHTML = `Score: ${scoreCount}`;
     sound.play();
   }
 }
